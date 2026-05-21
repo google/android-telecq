@@ -1,0 +1,8 @@
+google3==1.0.0
+librosa
+mobly
+numpy
+portpicker
+protobuf
+scipy
+snippet-uiautomator
