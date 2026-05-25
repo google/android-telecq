@@ -9,7 +9,7 @@ import time
 from mobly import utils as mobly_utils
 
 from android_beat.bluetooth.platforms.common.ssh import ssh as ssh_lib
-import resources
+
 
 
 # The command to install the hidapi library
@@ -93,7 +93,7 @@ def _push_code_file_to_remote(ssh: ssh_lib.SSHProxy, username: str) -> None:
           _DEFAULT_HIDTOOL_SOURCE_NAME,
       )
   )
-  local_hid_code_path = resources.GetResourceFilename(_HID_TOOL_CODE_PATH)
+  local_hid_code_path = "android_beat/platforms/bluetooth/tools/hidtool.c"
   if ssh.is_file(remote_hid_code_path):
     try:
       ssh.rm_file(remote_hid_code_path)
@@ -109,7 +109,7 @@ def _push_code_file_to_remote(ssh: ssh_lib.SSHProxy, username: str) -> None:
 
 def _compile_hidtool_local() -> None:
   """Compiles HID tool source code to a binary on Mobly host."""
-  local_hid_code_path = resources.GetResourceFilename(_HID_TOOL_CODE_PATH)
+  local_hid_code_path = "android_beat/platforms/bluetooth/tools/hidtool.c"
   output_file_path = pathlib.Path(
       _LOCAL_CACHE_DIR_PATH,
       _DEFAULT_HIDTOOL_NAME,
