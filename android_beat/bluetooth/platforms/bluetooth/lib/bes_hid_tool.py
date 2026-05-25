@@ -48,6 +48,8 @@ _STABLE_MCU_VERSION = 'V1.0.3'
 _SHORT_TIMEOUT = datetime.timedelta(seconds=10)
 _LONG_TIMEOUT = datetime.timedelta(seconds=30)
 
+_LOCAL_HID_CODE_PATH = "android_beat/platforms/bluetooth/tools/hidtool.c"
+
 
 def _install_hidapi_lib_local() -> None:
   """Installs hidapi library on Mobly host."""
@@ -93,7 +95,6 @@ def _push_code_file_to_remote(ssh: ssh_lib.SSHProxy, username: str) -> None:
           _DEFAULT_HIDTOOL_SOURCE_NAME,
       )
   )
-  local_hid_code_path = "android_beat/platforms/bluetooth/tools/hidtool.c"
   if ssh.is_file(remote_hid_code_path):
     try:
       ssh.rm_file(remote_hid_code_path)
@@ -101,7 +102,7 @@ def _push_code_file_to_remote(ssh: ssh_lib.SSHProxy, username: str) -> None:
       return
 
   ssh.push(
-      local_src_filename=local_hid_code_path,
+      local_src_filename=_LOCAL_HID_CODE_PATH,
       remote_dest_filename=remote_hid_code_path,
       change_permission=True,
   )
@@ -109,7 +110,6 @@ def _push_code_file_to_remote(ssh: ssh_lib.SSHProxy, username: str) -> None:
 
 def _compile_hidtool_local() -> None:
   """Compiles HID tool source code to a binary on Mobly host."""
-  local_hid_code_path = "android_beat/platforms/bluetooth/tools/hidtool.c"
   output_file_path = pathlib.Path(
       _LOCAL_CACHE_DIR_PATH,
       _DEFAULT_HIDTOOL_NAME,
@@ -117,7 +117,7 @@ def _compile_hidtool_local() -> None:
   mobly_utils.run_command(
       cmd=_HIDTOOL_COMPILE_COMMAND.format(
           output_path=output_file_path,
-          source_path=local_hid_code_path,
+          source_path=_LOCAL_HID_CODE_PATH,
       ),
       shell=True,
   )

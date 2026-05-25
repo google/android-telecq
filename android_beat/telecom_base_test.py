@@ -178,8 +178,8 @@ class TelecomBaseTest(base_test.BaseTestClass):
     if self._NEED_REBOOT:
       ad.reboot()
     if ad in [self.ad, self.ad_ref]:
-      
-      
+      video_alias = 'video'
+      ad.services.register(video_alias, screen_recorder.ScreenRecorder)
     if self._REQUIRE_BLUETOOTH:
       self.switch_bluetooth_le_audio(
           ad,
