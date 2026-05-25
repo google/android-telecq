@@ -25,11 +25,11 @@ def install_and_load_telecom_snippet(
     snippet_name: The attribute name to which to attach the snippet client.
   """
   if (
-      not "android_beat/snippet/telecom_snippets.apk"
+      not "android_beat/telecom/snippet/telecom_snippets.apk"
       or not snippet_package
   ):
     raise ValueError('Either user_params or snippet_package must be provided.')
-  apk_utils.install(ad, "android_beat/snippet/telecom_snippets.apk")
+  apk_utils.install(ad, "android_beat/telecom/snippet/telecom_snippets.apk")
   ad.load_snippet(snippet_name, snippet_package)
 
 
@@ -48,11 +48,11 @@ def install_and_load_bluetooth_snippet(
     snippet_name: The attribute name to which to attach the snippet client.
   """
   if (
-      not "android_beat/snippet/bluetooth_snippets.apk"
+      not "android_beat/bluetooth/snippet/bluetooth_snippets.apk"
       or not snippet_package
   ):
     raise ValueError('Either user_params or snippet_package must be provided.')
-  apk_utils.install(ad, "android_beat/snippet/bluetooth_snippets.apk")
+  apk_utils.install(ad, "android_beat/bluetooth/snippet/bluetooth_snippets.apk")
   ad.load_snippet(snippet_name, snippet_package)
 
 

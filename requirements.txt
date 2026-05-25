@@ -1,14 +1,16 @@
 dacite
 immutabledict
 librosa
-mobly
+mobly>=1.12.2
 mobly-android-screen-recorder
 numpy
+opencv-python-headless
 paramiko
 portpicker
 protobuf
 pyserial
 python-dateutil
+retrying
 scipy
 snippet-uiautomator
 tenacity
