@@ -17,7 +17,7 @@ from typing import Any
 
 from mobly import asserts
 from mobly.controllers import android_device
-from snippet_uiautomator import uiautomator_g3
+
 
 from android_beat import call_audio_state
 from android_beat import telecom_timeout_constants as timeout_constants
@@ -1690,7 +1690,7 @@ def verify_call_log_type_is_audio(
       return True
     else:
       ad.log.error('UI verification failed: Could not find audio icon.')
-      uiautomator_g3.dump_to_hsv(ad, ad.ui, ad.current_test_info)
+      
       return False
 
   finally:
@@ -1753,7 +1753,7 @@ def verify_history_contact_email(
           'UI verification failed: Could not find %s on screen.',
           target_email,
       )
-      uiautomator_g3.dump_to_hsv(ad, ad.ui, ad.current_test_info)
+      
       return False
 
   finally:
