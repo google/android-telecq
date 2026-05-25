@@ -3,6 +3,7 @@ dateutil
 google3==1.0.0
 librosa
 mobly
+mobly-android-screen-recorder
 immutabledict
 numpy
 paramiko
