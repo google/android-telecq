@@ -48,7 +48,7 @@ _STABLE_MCU_VERSION = 'V1.0.3'
 _SHORT_TIMEOUT = datetime.timedelta(seconds=10)
 _LONG_TIMEOUT = datetime.timedelta(seconds=30)
 
-_LOCAL_HID_CODE_PATH = "android_beat/platforms/bluetooth/tools/hidtool.c"
+_LOCAL_HID_CODE_PATH = "android_beat/bluetooth/platforms/bluetooth/tools/hidtool.c"
 
 
 def _install_hidapi_lib_local() -> None:
