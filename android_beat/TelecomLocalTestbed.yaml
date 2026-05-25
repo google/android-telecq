@@ -34,3 +34,5 @@ TestBeds:
             channels: 2
 MoblyParams:
   LogPath: 'C:/User/testuser/AppData/Local/Temp'
+  telecom_test_call_audio:
+    - '/home/beto-bej-02/telecomcq/android-telecq/telecom_test_call_audio.ogg'

@@ -256,8 +256,8 @@ class TelecomBaseTest(base_test.BaseTestClass):
           self._BLUETOOTH_MODE == TelecomBaseState.LEA,
       )
     telecom_utils.patch_local_device_dimensions(self.user_params, self.devices)
-    mh_files = self.user_params.get('mh_files', {})
-    call_audio_files = mh_files.get('telecom_test_call_audio', ['telecom_test_call_audio.ogg'])
+    
+    call_audio_files = self.user_params.get('telecom_test_call_audio', [])
     asserts.assert_true(
         call_audio_files, 'No call audio file provided in mh_files.'
     )
