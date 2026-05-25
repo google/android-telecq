@@ -22,8 +22,8 @@ from android_beat import call_audio_state
 from android_beat import device_setup_utils
 from android_beat.utils import media_utils as telecom_media_utils
 from android_beat.utils import telecom_utils
-from android_beat.bluetooth.platforms.android.services import screen_recorder
-from android_beat.bluetooth.platforms.android.services import video_service
+
+from mobly.controllers.android_device_lib.services import screen_recorder
 from android_beat.bluetooth.platforms.android.services.logcat import logcat_pubsub_service
 
 _TELECOM_SNIPPET_PACKAGE = 'com.google.snippet.telecom'
