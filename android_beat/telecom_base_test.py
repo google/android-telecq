@@ -22,7 +22,7 @@ from android_beat import call_audio_state
 from android_beat import device_setup_utils
 from android_beat.utils import media_utils as telecom_media_utils
 from android_beat.utils import telecom_utils
-from android_beat.bluetooth.platforms.android.services import screen_recorder_v2
+from android_beat.bluetooth.platforms.android.services import screen_recorder
 from android_beat.bluetooth.platforms.android.services import video_service
 from android_beat.bluetooth.platforms.android.services.logcat import logcat_pubsub_service
 
@@ -312,11 +312,11 @@ class TelecomBaseTest(base_test.BaseTestClass):
         # VOICE_CALL_DOWN_LINK audio source config.
         devices.services.register(
             'screen_recorder',
-            screen_recorder_v2.ScreenRecorderV2,
-            screen_recorder_v2.Configs(
+            screen_recorder.ScreenRecorder,
+            screen_recorder.Configs(
                 enable_audio=True,
                 save_audio_file=True,
-                audio_source=screen_recorder_v2.AudioSourceType.VOICE_CALL_DOWN_LINK,
+                audio_source="voice-call-downlink",
                 restart_after_create_excerpts=False,
             ),
             start_service=False,
@@ -327,8 +327,8 @@ class TelecomBaseTest(base_test.BaseTestClass):
         # default audio source config(full conversation).
         devices.services.register(
             'screen_recorder',
-            screen_recorder_v2.ScreenRecorderV2,
-            screen_recorder_v2.Configs(
+            screen_recorder.ScreenRecorder,
+            screen_recorder.Configs(
                 enable_audio=True,
                 save_audio_file=True,
                 restart_after_create_excerpts=False,

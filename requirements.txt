@@ -1,8 +1,16 @@
+dacite
+dateutil
 google3==1.0.0
 librosa
 mobly
+immutabledict
 numpy
+paramiko
 portpicker
 protobuf
+python-dateutil
+resources
 scipy
+serial
 snippet-uiautomator
+tenacity

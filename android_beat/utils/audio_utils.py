@@ -364,7 +364,7 @@ def record_and_check_recorded_audio_file_silent(
 ) -> dict[str, bool]:
   """Records audio from BT device and phone speaker, and checks for silence.
 
-  Note: Need to register screen_recorder_v2 service with "start_service=False"
+  Note: Need to register screen_recorder service with "start_service=False"
   status on the Android device before using this function.
 
   Args:

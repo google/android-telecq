@@ -43,6 +43,7 @@ _DIALER_ACTIVITY = (
 )
 _SNIPPET_PKG = 'com.google.snippet.telecom'
 _ANSWER_RE = r'(?i)Answer.*|Accept.*|Video.*'
+_RECENTS_TAB_REGEX = r'(?i)(Recents?|Home)'
 
 
 @enum.unique
@@ -949,7 +950,7 @@ def verify_audio_call_label_dialer(
     time.sleep(UI_WAIT_TIME.total_seconds())
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
     time.sleep(UI_WAIT_TIME.total_seconds())
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
@@ -1002,7 +1003,7 @@ def verify_meet_timestamp_present(
     set_snippet_dialer(ad, _DIALER_PKG)
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       recents_tab.click()
     else:
@@ -1046,7 +1047,7 @@ def verify_meet_label_present(
     set_snippet_dialer(ad, _DIALER_PKG)
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
@@ -1098,13 +1099,12 @@ def verify_group_call_label_dialer(
     time.sleep(UI_WAIT_TIME.total_seconds())
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
     else:
       ad.log.warning('Could not find "Recents" tab')
-      return False
 
     group_call_ui = ad.ui(textMatches=group_call_regex)
     ad.log.info('Verifying if the screen contains the keyword: "Group call"')
@@ -1230,7 +1230,7 @@ def verify_call_direction_incoming(
     set_snippet_dialer(ad, _DIALER_PKG)
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
     time.sleep(UI_WAIT_TIME.total_seconds())
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
@@ -1299,7 +1299,7 @@ def verify_multiple_calls_in_history(
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
 
     time.sleep(UI_WAIT_TIME.total_seconds())
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
@@ -1486,7 +1486,7 @@ def make_callback_from_dialer(
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
 
     time.sleep(UI_WAIT_TIME.total_seconds())
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=r'(?i)(Recents?|Home)')
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
@@ -1551,7 +1551,7 @@ def verify_missed_call_logged(
 
     time.sleep(UI_WAIT_TIME.total_seconds())
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.exists:
       recents_tab.click()
 
@@ -1619,7 +1619,7 @@ def verify_declined_call_logged(
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
     time.sleep(UI_WAIT_TIME.total_seconds())
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.exists:
       recents_tab.click()
 
@@ -1677,7 +1677,7 @@ def verify_call_log_type_is_audio(
 
     time.sleep(UI_WAIT_TIME.total_seconds())
 
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.exists:
       recents_tab.click()
 
@@ -1786,14 +1786,15 @@ def clear_dialer_call_history(
     set_snippet_dialer(ad, _DIALER_PKG)
     ad.adb.shell(f'am start -S -W -n {_DIALER_PKG}/{_DIALER_ACTIVITY}')
     time.sleep(UI_WAIT_TIME.total_seconds())
-    recents_tab = ad.ui(textMatches=r'(?i)Recents?')
+    recents_tab = ad.ui(textMatches=_RECENTS_TAB_REGEX)
     if recents_tab.wait.exists(timeout=timeout):
       ad.log.info('Clicked "Recents" tab')
       recents_tab.click()
     else:
       ad.log.warning('Could not find "Recents" tab')
       return False
-    more_options = ad.ui(description='More options')
+    options_regex = r'(?i)(More options|Open navigation drawer)'
+    more_options = ad.ui(descriptionMatches=options_regex)
     if more_options.wait.exists(timeout=timeout):
       more_options.click()
       ad.log.info('Clicked "More options" button')
@@ -1812,6 +1813,7 @@ def clear_dialer_call_history(
     ok_btn = ad.ui(text='OK')
     if ok_btn.wait.exists(timeout=timeout):
       ok_btn.click()
+      time.sleep(UI_WAIT_TIME.total_seconds())
       ad.log.info('Call history cleared successfully')
     else:
       ad.log.error('Could not find "OK" button')
@@ -1820,7 +1822,7 @@ def clear_dialer_call_history(
     fuzzy_regex = f'(?i).*{prefix}.*@gmail.*'
     if not ad.ui(textMatches=fuzzy_regex).exists:
       ad.log.error(
-          f'Verification failed: Call history still contains {target_email}'
+          f'Verification passed: Call history cleared for {target_email}'
       )
       return True
     else:
@@ -1963,6 +1965,7 @@ def override_flag_value_ui(
   ad.log.info("Clicking 'OVERRIDE FLAG' button...")
   if override_btn.wait.exists(timeout=timeout):
     override_btn.click()
+    time.sleep(UI_WAIT_TIME.total_seconds())
   else:
     ad.log.error("Could not find 'OVERRIDE FLAG' button.")
     return False
