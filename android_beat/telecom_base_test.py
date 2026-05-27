@@ -256,10 +256,8 @@ class TelecomBaseTest(base_test.BaseTestClass):
           self._BLUETOOTH_MODE == TelecomBaseState.LEA,
       )
     telecom_utils.patch_local_device_dimensions(self.user_params, self.devices)
-    
-    call_audio_files = self.user_params.get('telecom_test_call_audio', [])
-    asserts.assert_true(
-        call_audio_files, 'No call audio file provided in mh_files.'
+    call_audio_file = telecom_utils.get_telecom_test_call_audio(
+        self.ad, self.user_params
     )
     # Set up the reference device phone number
     self.ad_phone_number = telecom_utils.get_phone_number(self.ad)
@@ -274,7 +272,7 @@ class TelecomBaseTest(base_test.BaseTestClass):
     if self.ad_ref_2:
       telecom_media_utils.push_call_test_audio_file(
           self.ad_ref_2,
-          call_audio_files[0],
+          call_audio_file[0],
       )
       # Set the media volume in ad_ref_2 device to maximum.
       # This is for achieving optimal sound clarity in audio recordings.

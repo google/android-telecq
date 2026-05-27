@@ -11,6 +11,7 @@ import contextlib
 import datetime
 import enum
 import logging
+import os
 import re
 import time
 from typing import Any
@@ -236,6 +237,41 @@ def get_phone_number(ad: android_device.AndroidDevice) -> str:
     )
     phone_number = ad.dimensions['phone_number']
   return phone_number
+
+
+def get_telecom_test_call_audio(
+    ad: android_device.AndroidDevice,
+    user_params: dict[str, Any] | None = None,
+) -> list[str]:
+  """Gets the telecom test call audio file path.
+
+  Args:
+    ad: The Android device to get the audio file for.
+    user_params: The user parameters from Mobly.
+
+  Returns:
+    The path to the telecom test call audio file.
+  """
+  call_audio_files = []
+  if user_params:
+    mh_files = user_params.get('mh_files', {})
+    call_audio_files = self.user_params.get('telecom_test_call_audio', [])
+
+  if not call_audio_files:
+    # Try relative path for open source
+    relative_path = 'android-telecq/telecom_test_call_audio.ogg'
+    if os.path.exists(relative_path):
+      abs_path = os.path.abspath(relative_path)
+      call_audio_files = [abs_path]
+      ad.log.info(
+          'Found telecom_test_call_audio at relative path: %s', abs_path
+      )
+
+  asserts.assert_true(
+      call_audio_files,
+      'No call audio file provided in mh_files or relative path.',
+  )
+  return call_audio_files
 
 
 def wait_for_call_ringing(

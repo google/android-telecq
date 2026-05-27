@@ -174,7 +174,7 @@ class MobileCallWithLeaTest(telecom_base_test.TelecomBaseTest):
     )
     telecom_media_utils.play_media_on_android_device(self.ad, _MEDIA_FILE_PATH)
     test_utils.wait_until_or_assert(
-        condition=lambda: bluetooth_utils.is_media_playing_on_lea(
+        condition=lambda: bluetooth_utils.is_le_audio_streaming_active(
             self.ad, self.bt_address_primary
         ),
         error_msg='Media is not playing on LEA.',
@@ -253,7 +253,7 @@ class MobileCallWithLeaTest(telecom_base_test.TelecomBaseTest):
         self.ad, expected_music_state=True
     )
     test_utils.wait_until_or_assert(
-        condition=lambda: bluetooth_utils.is_media_playing_on_lea(
+        condition=lambda: bluetooth_utils.is_le_audio_streaming_active(
             self.ad, self.bt_address_primary
         ),
         error_msg='Media is not playing on LEA.',
@@ -442,7 +442,7 @@ class MobileCallWithLeaTest(telecom_base_test.TelecomBaseTest):
     )
     telecom_media_utils.play_media_on_android_device(self.ad, _MEDIA_FILE_PATH)
     test_utils.wait_until_or_assert(
-        condition=lambda: bluetooth_utils.is_media_playing_on_lea(
+        condition=lambda: bluetooth_utils.is_le_audio_streaming_active(
             self.ad, self.bt_address_primary
         ),
         error_msg='Media is not playing on LEA.',
@@ -523,7 +523,7 @@ class MobileCallWithLeaTest(telecom_base_test.TelecomBaseTest):
         self.ad, expected_music_state=True
     )
     test_utils.wait_until_or_assert(
-        condition=lambda: bluetooth_utils.is_media_playing_on_lea(
+        condition=lambda: bluetooth_utils.is_le_audio_streaming_active(
             self.ad, self.bt_address_primary
         ),
         error_msg='Media is not playing on LEA.',

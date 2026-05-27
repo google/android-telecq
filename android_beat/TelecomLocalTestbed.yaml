@@ -2,14 +2,17 @@ TestBeds:
 - Name: TelecomLocalTestbed
   Controllers:
     AndroidDevice:
-      - serial: 'localhost:5555'
-        phone_number: '10000000000'
-    AndroidDevice:
-      - serial: 'localhost:5556'
-        phone_number: '10000000001'
-    AndroidDevice:
-      - serial: 'localhost:5557'
-        phone_number: '10000000002'
+      - serial: '57311FDCH004WP'
+        dimensions:
+          phone_number: '17274863986'
+      - serial: '55211FDCH001KR'
+        dimensions:
+          phone_number: '19520169814'
+      - serial: '54241FDCQ0003Q'
+        dimensions:
+          phone_number: '10000000002'
+          telecom_test_call_audio: '/home/beto-bej-02/telecomcq/android-telecq/telecom_test_call_audio.ogg'
+
     BluetoothReferenceDevice:
       - controller_name: 'TwsDevice'
         controller_type: 'BesDevice'
@@ -17,7 +20,7 @@ TestBeds:
         left_config:
           remote_mode: false
           serial_port: '/dev/ttyUSB0'
-          bluetooth_address: '11:11:22:33:33:50'
+          bluetooth_address: '11:11:22:33:33:70'
           audio_configs:
             pcm_name: 'hw:0,0'
             sample_rate: 8000
@@ -26,13 +29,12 @@ TestBeds:
         right_config:
           remote_mode: false
           serial_port: '/dev/ttyUSB1'
-          bluetooth_address: '11:11:22:33:33:51'
+          bluetooth_address: '11:11:22:33:33:71'
           audio_configs:
             pcm_name: 'hw:1,0'
             sample_rate: 8000
             sample_format: 'S16_LE'
             channels: 2
+
 MoblyParams:
-  LogPath: 'C:/User/testuser/AppData/Local/Temp'
-  telecom_test_call_audio:
-    - '/home/beto-bej-02/telecomcq/android-telecq/telecom_test_call_audio.ogg'
+  LogPath: './logs'
