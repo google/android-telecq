@@ -1,4 +1,4 @@
-# Telecom Automation Test with Bluetooth (android-telecq)
+# Telephony Compliance Quality Suite (android-telecq)
 
 ## What is android-telecq?
 
@@ -29,43 +29,53 @@ for each category.
 ### Cellular Mobile Call Tests (SIM Required)
 
 *   **`MobileCallWithClassicHfpTest`** (Classic HFP):
-    *   **Call Control**: Make, answer, reject, and end cellular mobile calls
-        from both the phone and the HFP headset.
+    *   **Call Control**: Make and answer incoming/outgoing cellular calls;
+        verify call rejection and correct call termination from the HFP headset
+        during dialing and active states.
+    *   **Ringtone Routing**: Verify incoming call ringtone is correctly routed
+        to the HFP headset.
     *   **Call Preemption**: Verify incoming and outgoing cellular calls
-        correctly pause active media playback and resume media streaming after
-        the call ends.
-    *   **Audio Route Switching**: Verify call audio routing can be switched
-        between the HFP headset and phone earpiece/speaker during an active
-        call.
-    *   **Connection Reliability**: Verify audio routing and connection
-        stability when the HFP headset is powered off and back on during an
-        active call.
+        correctly pause active media playback and resume media streaming
+        afterward.
+    *   **Audio Route Switching**: Verify mid-call audio route switching
+        between the HFP headset and the phone earpiece/speaker.
+    *   **Link Re-establishment**: Verify call audio automatically restores to
+        the HFP headset when the headset is powered off and back on, or when
+        the phone's Bluetooth is toggled off and on during a call.
 *   **`MobileCallWithLeaTest`** (LE Audio):
-    *   **Call Control**: Make, answer, and end cellular mobile calls when
-        connected to an LE Audio headset.
+    *   **Call Control**: Make, answer, and end incoming/outgoing cellular
+        calls through the LE Audio headset.
+    *   **Ringtone Routing**: Verify incoming call ringtone is correctly routed
+        to the LE Audio headset.
     *   **Call Preemption**: Verify incoming and outgoing cellular calls
         correctly pause active media playback on LE Audio and resume media
-        streaming after the call ends.
-    *   **Audio Route Switching**: Verify mid-call audio route switching between
-        LE Audio headset and phone speaker during an active call.
+        streaming afterward.
+    *   **Audio Route Switching**: Verify mid-call audio route switching
+        between the LE Audio headset and the phone speaker during an active
+        call.
 
 ### Voice over IP (VoIP) Call Tests (No SIM Required)
 
 *   **`VoipCallWithHfpHeadsetTest`** (Classic HFP):
-    *   **Call Control**: Initiate, answer, and end self-managed VoIP calls
-        through the HFP headset.
-    *   **Call Preemption**: Verify incoming and outgoing VoIP calls correctly
-        pause active media playback and resume media after the VoIP call ends.
-    *   **Audio Route Switching**: Verify mid-call audio route switching between
-        HFP headset, device speaker, and earpiece, including when the headset
-        powers off and on during an active VoIP call.
+    *   **Call Control**: Initiate, answer, reject, and end self-managed VoIP
+        calls through the HFP headset, including active and dialing states.
+    *   **Ringtone Routing**: Verify incoming VoIP call ringtone is correctly
+        routed to the HFP headset.
+    *   **Audio Route Switching**: Verify mid-call audio route switching
+        between the HFP headset and the phone speaker/earpiece.
+    *   **Link Re-establishment**: Verify call audio automatically restores to
+        the HFP headset when the headset is powered off/on or when the phone's
+        Bluetooth is toggled during an active VoIP call.
 *   **`VoipCallWithLeaHeadsetTest`** (LE Audio):
     *   **Call Control**: Initiate, answer, and end self-managed VoIP calls
         through the LE Audio headset.
+    *   **Ringtone Routing**: Verify incoming VoIP call ringtone is correctly
+        routed to the LE Audio headset.
     *   **Call Preemption**: Verify incoming and outgoing VoIP calls correctly
-        pause active media playback and resume media after the VoIP call ends.
-    *   **Audio Route Switching**: Verify mid-call audio route switching between
-        LE Audio headset and device speaker/earpiece.
+        pause active media playback on the LE Audio headset and resume media
+        afterward.
+    *   **Audio Route Switching**: Verify mid-call audio route switching
+        between the LE Audio headset and the phone earpiece/speaker.
 
 ## Hardware Requirements
 
@@ -120,6 +130,14 @@ Ensure the host machine has the following software installed:
 *   [Android Debug Bridge (adb)](https://developer.android.com/tools/adb)
     (1.0.40+ recommended)
 *   python3.11+
+*   VIDEO SERVICE: The test framework uses the open-source Mobly Android
+    Screen Recorder (https://github.com/google/mobly-android-screen-recorder)
+    to automatically capture screen recordings and audio during tests.
+    -   **Requirements**: FFMPEG 6.1.1+ with H.264 support (run `ffmpeg -codecs`
+        and look for `libx264` encoder) and OpenCV in Python built with the
+        H.264 encoder.
+    -   **Audio Recording**: The `ffmpeg` binary must be installed and
+        available in your host system's `PATH`.
 
 ### Phone Setup Instructions
 
@@ -187,41 +205,45 @@ ls /dev/ttyUSB*
 
     ```yaml
     TestBeds:
-    - Name: TelecomLocalTestbed
-      Controllers:
-        AndroidDevice:
-          - serial: 'YOUR_DUT_SERIAL'
-            phone_number: '10000000000'
-        AndroidDevice:
-          - serial: 'YOUR_REF_SERIAL'
-            phone_number: '10000000001'
-        AndroidDevice:
-          - serial: 'YOUR_REF2_SERIAL'
-            phone_number: '10000000002'
-        BluetoothReferenceDevice:
-          - controller_name: 'TwsDevice'
-            controller_type: 'BesDevice'
-            primary_ear: 'RIGHT'
-            left_config:
-              remote_mode: false
-              serial_port: 'YOUR_LEFT_BES_PORT' # e.g. /dev/ttyUSB0
-              bluetooth_address: '11:11:22:33:33:50'
-              audio_configs:
-                pcm_name: 'hw:0,0' # See above for how to query pcm name
-                sample_rate: 8000
-                sample_format: 'S16_LE'
-                channels: 2
-            right_config:
-              remote_mode: false
-              serial_port: 'YOUR_RIGHT_BES_PORT' # e.g. /dev/ttyUSB1
-              bluetooth_address: '11:11:22:33:33:51'
-              audio_configs:
-                pcm_name: 'hw:1,0' # See above for how to query pcm name
-                sample_rate: 8000
-                sample_format: 'S16_LE'
-                channels: 2
-    MoblyParams:
-      LogPath: '/tmp/mobly_logs'
+      - Name: TelecomLocalTestbed
+        Controllers:
+          AndroidDevice:
+            - serial: 'localhost:1234'
+              dimensions:
+                phone_number: '1234567890'
+            - serial: 'localhost:1234'
+              dimensions:
+                phone_number: '1234567890'
+            - serial: 'localhost:1234'
+              dimensions:
+                phone_number: '10000000002'
+
+          BluetoothReferenceDevice:
+            - controller_name: 'TwsDevice'
+              controller_type: 'BesDevice'
+              primary_ear: 'RIGHT'
+              left_config:
+                remote_mode: false
+                serial_port: '/dev/ttyUSB0'
+                bluetooth_address: '11:11:22:33:33:70'
+                audio_configs:
+                  pcm_name: 'hw:0,0'
+                  sample_rate: 8000
+                  sample_format: 'S16_LE'
+                  channels: 2
+              right_config:
+                remote_mode: false
+                serial_port: '/dev/ttyUSB1'
+                bluetooth_address: '11:11:22:33:33:71'
+                audio_configs:
+                  pcm_name: 'hw:1,0'
+                  sample_rate: 8000
+                  sample_format: 'S16_LE'
+                  channels: 2
+
+      MoblyParams:
+        LogPath: './logs'
+
     ```
 
 ## Run Tests
@@ -251,24 +273,18 @@ Profile \ Test Category | Cellular Mobile Calls (SIM Required) | VoIP Calls (Sel
 **LE Audio (LEA)**      | `mobile_call_with_lea_test`          | `voip_call_with_lea_headset_test`
 **Classic (HFP)**       | `mobile_call_with_classic_hfp_test`  | `voip_call_with_hfp_headset_test`
 
-#### Run the full Telecom All Test Suite (Executes all 4 test classes)
-
-```bash
-python3 -m android_beat.telecom_all_test_suite -c android_beat/TelecomLocalTestbed.yaml
-```
-
 #### Run Cellular Mobile Call Tests (SIM Required)
 
 Run the Bluetooth **LE Audio cellular call test suite**:
 
 ```bash
-python3 -m android_beat.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_beat/TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 Run the Bluetooth **Classic HFP cellular call test suite**:
 
 ```bash
-python3 -m android_beat.telecom_automation_test_with_bluetooth.mobile_call_with_classic_hfp_test -c android_beat/TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_classic_hfp_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 #### Run VoIP Call Tests (No SIM Required)
@@ -276,13 +292,13 @@ python3 -m android_beat.telecom_automation_test_with_bluetooth.mobile_call_with_
 Run the Bluetooth **LE Audio VoIP call test suite**:
 
 ```bash
-python3 -m android_beat.telecom_automation_test_with_bluetooth.voip_call_with_lea_headset_test -c android_beat/TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.voip_call_with_lea_headset_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 Run the Bluetooth **Classic HFP VoIP call test suite**:
 
 ```bash
-python3 -m android_beat.telecom_automation_test_with_bluetooth.voip_call_with_hfp_headset_test -c android_beat/TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.voip_call_with_hfp_headset_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 #### Run Specific Test Cases
@@ -294,14 +310,14 @@ adding the `--tests` flag.
     execution command. For example:
 
     ```bash
-    python3 -m android_beat.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_beat/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest.test_outgoing_call_through_lea_headset
+    python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest.test_outgoing_call_through_lea_headset
     ```
 
 +   To run all tests in a specific test class, add `--tests TestClass` to the
     execution command. For example:
 
     ```bash
-    python3 -m android_beat.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_beat/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest
+    python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest
     ```
 
 ## View Results and Debug
