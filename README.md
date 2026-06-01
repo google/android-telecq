@@ -278,13 +278,13 @@ Profile \ Test Category | Cellular Mobile Calls (SIM Required) | VoIP Calls (Sel
 Run the Bluetooth **LE Audio cellular call test suite**:
 
 ```bash
-python3 -m telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 Run the Bluetooth **Classic HFP cellular call test suite**:
 
 ```bash
-python3 -m telecom_automation_test_with_bluetooth.mobile_call_with_classic_hfp_test -c TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_classic_hfp_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 #### Run VoIP Call Tests (No SIM Required)
@@ -292,13 +292,13 @@ python3 -m telecom_automation_test_with_bluetooth.mobile_call_with_classic_hfp_t
 Run the Bluetooth **LE Audio VoIP call test suite**:
 
 ```bash
-python3 -m telecom_automation_test_with_bluetooth.voip_call_with_lea_headset_test -c TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.voip_call_with_lea_headset_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 Run the Bluetooth **Classic HFP VoIP call test suite**:
 
 ```bash
-python3 -m telecom_automation_test_with_bluetooth.voip_call_with_hfp_headset_test -c TelecomLocalTestbed.yaml
+python3 -m android_telecq.telecom_automation_test_with_bluetooth.voip_call_with_hfp_headset_test -c android_telecq/TelecomLocalTestbed.yaml
 ```
 
 #### Run Specific Test Cases
@@ -310,14 +310,14 @@ adding the `--tests` flag.
     execution command. For example:
 
     ```bash
-    python3 -m telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest.test_outgoing_call_through_lea_headset
+    python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest.test_outgoing_call_through_lea_headset
     ```
 
 +   To run all tests in a specific test class, add `--tests TestClass` to the
     execution command. For example:
 
     ```bash
-    python3 -m telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest
+    python3 -m android_telecq.telecom_automation_test_with_bluetooth.mobile_call_with_lea_test -c android_telecq/TelecomLocalTestbed.yaml --tests MobileCallWithLeaTest
     ```
 
 ## View Results and Debug
