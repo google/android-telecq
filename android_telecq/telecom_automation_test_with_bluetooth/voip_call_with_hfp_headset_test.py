@@ -1,3 +1,4 @@
+_TELECOM_LOG_TAG = False
 """Voice Call Tests with HFP Headset."""
 
 import datetime
