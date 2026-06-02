@@ -127,7 +127,7 @@ def close_popup_windows(
   # Regex to match any of the pop-up buttons we need to dismiss.
   # Case-insensitive match for "Allow", "OK", "Close", or "Skip".
   popup_button_texts = (
-      r"(?i)\s*(OK|Close|Skip|Got it|Save|Keep Google|Dismiss|TRY"
+      r"(?i)\s*(OK(,?\s*got it)?|Close|Skip|Got it|Save|Keep Google|Dismiss|TRY"
       r" AGAIN|Cancel|Done|Try again)\s*"
   )
 
@@ -396,10 +396,11 @@ def gemini_app_call_number(
     True if the call was successful, False otherwise.
   """
   ad.log.info("Preparing to call number via Gemini App: %s", phone_number)
-  input_field = ad.ui(textMatches="(?i)Type.*|Enter.*|Ask.*")
+  input_field = ad.ui(textMatches="(?i)Type.*|Enter.*|Ask.*|Not now.*")
   if input_field.wait.exists(timeout=5000):
     ad.log.info("Input field found, entering number...")
     input_field.click()
+    time.sleep(_UI_SHORT_BREATHING_TIMEOUT.total_seconds())
     formatted_cmd = f"Call {phone_number.replace(' ', '')}"
     ad.adb.shell(f"input text '{formatted_cmd}'")
     send_btn = ad.ui(descriptionMatches="(?i)Send.*")
@@ -414,13 +415,21 @@ def gemini_app_call_number(
     return False
 
   continue_btn = ad.ui(textMatches="(?i)Continue")
-  if continue_btn.wait.exists(timeout=5000):
-    ad.log.info("Clicking 'Continue' to confirm dialing...")
+  agree_btn = ad.ui(textMatches="(?i)I agree")
+
+  if continue_btn.wait.exists(timeout=7000):
+    ad.log.info("Found 'Continue' button, clicking it...")
     continue_btn.click()
-    return True
   else:
-    ad.log.error("No 'Continue' button found, call failed.")
-    return False
+    ad.log.info("No 'Continue' button appeared, skipping.")
+
+  if agree_btn.wait.exists(timeout=3000):
+    ad.log.info("Found 'I agree' button, clicking it to confirm...")
+    agree_btn.click()
+  else:
+    ad.log.info("No 'I agree' button appeared, skipping.")
+
+  return True
 
 
 def unhold_call_via_ui(

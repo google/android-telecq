@@ -138,6 +138,11 @@ Ensure the host machine has the following software installed:
         H.264 encoder.
     -   **Audio Recording**: The `ffmpeg` binary must be installed and
         available in your host system's `PATH`.
+    -   **Troubleshooting Video Recording**: If you encounter errors related
+        to screen recording or video container generation (e.g.,
+        `FileNotFoundError` during teardown), please refer to the custom
+        H.264 compilation guide in
+        [opencv_troubleshooting.md](opencv_troubleshooting.md).
 
 ### Phone Setup Instructions
 
@@ -368,7 +373,7 @@ benefits:
 
 When you open a BTX link, you should see the following dashboard.
 
-![target](docs/btx_target.png)
+![target](android_telecq/telecom_automation_test_with_bluetooth/docs/btx_target.png)
 
 1.  Use this checkbox to show/hide test cases based on status (e.g., Failed,
     Passed, Skipped).

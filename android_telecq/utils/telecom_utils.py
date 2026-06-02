@@ -739,7 +739,6 @@ def swipe_down_and_answer(ad: android_device.AndroidDevice) -> None:
   """Swipes down from the top of the screen to open status bar and clicks answer."""
   ad.log.info('Expanding notifications to open status bar...')
   ad.adb.shell('cmd statusbar expand-notifications')
-  time.sleep(UI_WAIT_TIME.total_seconds())
 
   ad_answer = ad.ui(descriptionMatches=_ANSWER_RE)
   if ad_answer.wait.exists(timeout=10000):

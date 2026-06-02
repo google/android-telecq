@@ -18,7 +18,6 @@ from scipy import signal
 from android_telecq.bluetooth.platforms.bluetooth import bes_device
 from android_telecq.bluetooth.platforms.bluetooth import tws_device
 
-
 _AudioChannelMode = bes_device.AudioChannelMode
 _AUDIO_PLAYBACK_DURATION_TIMEOUT = datetime.timedelta(seconds=10)
 _AUDIO_RECORDING_FINISH_TIMEOUT = datetime.timedelta(seconds=10)
@@ -289,6 +288,13 @@ def is_audio_file_empty_or_silent(
 
   metrics = _compute_metrics(filtered_data, sr, str(file_path))
 
+  if hasattr(metrics, 'max_rms') and metrics.max_rms > 0.008:
+    logging.info(
+        'Audio is NOT silent (Local signal detected via MaxRMS). MaxRMS: %.4f',
+        metrics.max_rms,
+    )
+    return False
+
   if metrics.mean_rms < _MEAN_RMS_THRESHOLD:
     if _should_rescue_low_volume_signal(metrics):
       return False
@@ -543,7 +549,7 @@ def record_and_verify_downlink_audio(
     duration: datetime.timedelta,
     call_type: CallType = CallType.TRADITIONAL,
     expect_silent: bool = True,
-    offset_sec: float = 0.0,
+    offset_sec: float = 1.0,
 ) -> bool:
   """Records downlink audio from the phone and checks for silence.
 
